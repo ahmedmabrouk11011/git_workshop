@@ -25,19 +25,6 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-        with:
-          token: ${{ github.token }}
-
-      # - uses: actions/checkout@v4
-      #   with:
-      #     token: ${{ secrets.GH_TOKEN }}
-      # - run: |
-      #     date > generated.txt
-      #     git config user.name github-actions
-      #     git config user.email github-actions@github.com
-      #     git add .
-      #     git commit -m "generated"
-      #     git push
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
@@ -56,21 +43,14 @@ jobs:
         run: |
           sed -i "s|tag:.*|tag: $IMAGE_TAG|g" $HELM_CHART_PATH/values.yaml
 
-      - name: Commit and push changes
-        uses: EndBug/add-and-commit@v7
+      - uses: actions/checkout@v4
         with:
-          author_name: GitHub Actions
-          author_email: actions@github.com
-          message: "Update image tag to test"
-          push: true
-
-      # - name: Commit and Push Changes
-      #   run: |
-      #     git config --global user.email "actions@github.com"
-      #     git config --global user.name "GitHub Actions"
-      #     git add .
-      #     git commit -m "New deployment: $IMAGE_TAG"
-      #     git push origin $GITHUB_REF:cicd
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          token: ${{ secrets.GH_TOKEN }}
+        env:
+          IMAGE_TAG: "test123"
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git commit -am "New deployment: $IMAGE_TAG"
+          git push
           
