@@ -24,78 +24,22 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
-
-      - name: Update Helm Chart Values File
-        env:
-          HELM_CHART_PATH: './infra/chart' # Update with the path to your Helm chart
-          IMAGE_TAG: "test123"
-        run: |
-          sed -i "s|tag:.*|tag: $IMAGE_TAG|g" $HELM_CHART_PATH/values.yaml
-          cat $HELM_CHART_PATH/values.yaml
-
-      - name: Check if there are any changes
-        id: verify_diff
-        run: |
-          git diff
-
-      - name: Commit
-        run: |
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
-          git add .
-          git commit -m "New deployment: test123" -a
-
-      - name: Check if there are any changes
-        id: verify_diff_2
-        run: |
-          git diff --stat origin/main
-
-
-      # - name: Push
-      #   if: steps.verify_diff.outputs.changed == 'true'
-      #   uses: ad-m/github-push-action@master
-      #   with:
-      #     github_token: ${{ secrets.GH_TOKEN }}
-      #     branch: ${{ github.ref }}
 
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_TOKEN }}
+        env:
+          HELM_CHART_PATH: './infra/chart' # Update with the path to your Helm chart
+          IMAGE_TAG: "test123"
       - run: |
-          # date > generated.txt
-          # git config user.name github-actions
-          # git config user.email github-actions@github.com
-          # git add .
-          # git commit -m "generated"
+          sed -i "s|tag:.*|tag: $IMAGE_TAG|g" $HELM_CHART_PATH/values.yaml
+          cat $HELM_CHART_PATH/values.yaml
+          git diff
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "New deployment: $IMAGE_TAG" -a
+          git diff --stat origin/main
           git push origin main
 
-      # - name: Commit and push changes
-      #   uses: EndBug/add-and-commit@v7
-      #   with:
-      #     author_name: GitHub Actions
-      #     author_email: actions@github.com
-      #     message: "Update image tag to test"
-      #     push: true
-
-      # - name: Commit and Push Changes
-      #   run: |
-      #     git config --global user.email "actions@github.com"
-      #     git config --global user.name "GitHub Actions"
-      #     git add .
-      #     git commit -m "New deployment: $IMAGE_TAG"
-      #     git push origin $GITHUB_REF:cicd
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          
+    
