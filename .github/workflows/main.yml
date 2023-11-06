@@ -11,6 +11,7 @@ on:
       - "README.md"
       - "infra/charts/**"
 
+
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -42,18 +43,33 @@ jobs:
           IMAGE_TAG: "test123"
         run: |
           sed -i "s|tag:.*|tag: $IMAGE_TAG|g" $HELM_CHART_PATH/values.yaml
-          # sed -i '/image:/,/tag:/s/tag:.*/tag: '"$IMAGE_TAG"'/' $HELM_CHART_PATH/values.yaml
-          # sed -i 's/\(tag:\s*\).*/\$IMAGE_TAG/' $HELM_CHART_PATH/values.yaml
 
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_TOKEN }}
-        env:
-          IMAGE_TAG: "test123"
       - run: |
+          # date > generated.txt
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
-          git commit -m "New deployment: $IMAGE_TAG"
+          git commit -m "generated"
           git push
+
+      # - name: Commit and push changes
+      #   uses: EndBug/add-and-commit@v7
+      #   with:
+      #     author_name: GitHub Actions
+      #     author_email: actions@github.com
+      #     message: "Update image tag to test"
+      #     push: true
+
+      # - name: Commit and Push Changes
+      #   run: |
+      #     git config --global user.email "actions@github.com"
+      #     git config --global user.name "GitHub Actions"
+      #     git add .
+      #     git commit -m "New deployment: $IMAGE_TAG"
+      #     git push origin $GITHUB_REF:cicd
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           
