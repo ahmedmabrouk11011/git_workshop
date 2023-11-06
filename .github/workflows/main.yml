@@ -44,8 +44,8 @@ jobs:
       - run: |
           pwd
           ls -la
-          sed -i "s|tag:.*|tag: $IMAGE_TAG|g" $HELM_CHART_PATH/values.yaml
-          cat $HELM_CHART_PATH/values.yaml
+          sed -i "s|tag:.*|tag: $IMAGE_TAG|g" infra/chart/values.yaml
+          cat infra/chart/values.yaml
           git diff
           git config user.name github-actions
           git config user.email github-actions@github.com
