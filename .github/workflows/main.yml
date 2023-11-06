@@ -31,9 +31,6 @@ jobs:
         env:
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          ./mvnw spring-boot:build-image -Pbuild-image
-          docker tag popup-service:latest $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$IMAGE_TAG"
       
 
