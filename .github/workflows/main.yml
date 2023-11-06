@@ -7,8 +7,9 @@ on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    paths-ignore:
+      - "README.md"
+      - "infra/charts/**"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -24,6 +25,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+        with:
+          token: ${{ github.token }}
 
       # - uses: actions/checkout@v4
       #   with:
@@ -49,7 +52,7 @@ jobs:
       - name: Update Helm Chart Values File
         env:
           HELM_CHART_PATH: './infra/chart' # Update with the path to your Helm chart
-          IMAGE_TAG: "test"
+          IMAGE_TAG: "test123"
         run: |
           sed -i "s|tag:.*|tag: $IMAGE_TAG|g" $HELM_CHART_PATH/values.yaml
 
