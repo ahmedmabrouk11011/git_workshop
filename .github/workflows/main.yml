@@ -45,7 +45,7 @@ jobs:
           git diff --stat origin/main
           git push origin main
         env:
-          IMAGE_TAG: "test123"
+          IMAGE_TAG: "test1234568"
           HELM_CHART_PATH: 'infra/chart'
 
     
