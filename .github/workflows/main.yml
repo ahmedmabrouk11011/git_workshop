@@ -25,16 +25,6 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
 
-      - uses: actions/checkout@v3
-
-      # - name: Update Helm Chart Values File
-      #   env:
-      #     HELM_CHART_PATH: './infra/chart' # Update with the path to your Helm chart
-      #     IMAGE_TAG: "test123"
-      #   run: |
-      #     sed -i "s|tag:.*|tag: $IMAGE_TAG|g" $HELM_CHART_PATH/values.yaml
-      #     cat $HELM_CHART_PATH/values.yaml
-
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_TOKEN }}
@@ -44,13 +34,13 @@ jobs:
       - run: |
           pwd
           ls -la
-          sed -i "s|tag:.*|tag: $IMAGE_TAG|g" infra/chart/values.yaml
+          sed -i "s|tag:.*|tag: test123|g" infra/chart/values.yaml
           cat infra/chart/values.yaml
           git diff
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
-          git commit -m "New deployment: $IMAGE_TAG" -a
+          git commit -m "New deployment: test123" -a
           git diff --stat origin/main
           git push origin main
 
