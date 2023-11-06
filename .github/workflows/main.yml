@@ -41,7 +41,8 @@ jobs:
           HELM_CHART_PATH: './infra/chart' # Update with the path to your Helm chart
           IMAGE_TAG: "test123"
         run: |
-          sed -i "s|tag:.*|tag: $IMAGE_TAG|g" $HELM_CHART_PATH/values.yaml
+          # sed -i "s|tag:.*|tag: $IMAGE_TAG|g" $HELM_CHART_PATH/values.yaml
+          sed -i '/image:/,/tag:/s/tag:.*/tag: '"$IMAGE_TAG"'/' $HELM_CHART_PATH/values.yaml
 
       - uses: actions/checkout@v4
         with:
