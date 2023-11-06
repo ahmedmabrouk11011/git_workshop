@@ -43,6 +43,7 @@ jobs:
           IMAGE_TAG: "test123"
         run: |
           sed -i "s|tag:.*|tag: $IMAGE_TAG|g" $HELM_CHART_PATH/values.yaml
+          cat $HELM_CHART_PATH/values.yaml
 
       - uses: actions/checkout@v4
         with:
